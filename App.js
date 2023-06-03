@@ -1,18 +1,29 @@
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import * as Font from 'expo-font';
 
 import RegistrationScreen from './screens/RegistrationScreen';
 
 export default function App() {
+ const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
+    const keyboardHidden = () => {
+        setIsShowKeyboard(false);
+        Keyboard.dismiss();
+    }
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={require("./assets/images/photo-BG.jpg")} style={styles.image}>
-        <RegistrationScreen />
-      </ImageBackground>
-      <StatusBar style="auto" />
-    </View>
+    <TouchableWithoutFeedback onPress={keyboardHidden}>
+      <View style={styles.container}>
+
+        <ImageBackground source={require("./assets/images/photo-BG.jpg")} style={styles.image}>
+          <RegistrationScreen />
+        </ImageBackground>
+
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -1,33 +1,65 @@
-import React from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity, Platform } from 'react-native';
+import React, { useState } from 'react';
+import {
+    StyleSheet,
+    TextInput,
+    View,
+    Text,
+    TouchableOpacity,
+    Platform,
+    KeyboardAvoidingView,
+    Keyboard
+} from 'react-native';
+
+const initialState = {
+    login: '',
+    email: '',
+    passWord: ''
+}
 
 export default function RegistrationScreen() {
-    const [textLogin, onChangeTextLogin] = React.useState('');
-    const [textEmail, onChangeTextEmail] = React.useState('');
-    const [textPassWord, onChangeTextPassWord] = React.useState('');
-    console.log(Platform.OS);
+    const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+    const [state, onChangeState] = useState(initialState);
+
+
+    const keyboardHidden = () => {
+        setIsShowKeyboard(false);
+        Keyboard.dismiss();
+        console.log(state);
+
+        onChangeState(initialState);
+    }
+
     return (
         <View style={styles.forma}>
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput style={styles.input}
-                onChangeText={onChangeTextLogin}
                 placeholder='Логін'
-                value={textLogin} />
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) => onChangeState((prevState) => ({ ...prevState, login: value }))}
+                value={state.login}
+            />
             <TextInput style={styles.input}
-                onChangeText={onChangeTextEmail}
                 placeholder='Адреса електронної пошти'
-                value={textEmail}
-                autoComplete='email' />
+                autoComplete='email'
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) => onChangeState((prevState) => ({ ...prevState, email: value }))}
+                value={state.email}
+            />
             <TextInput style={styles.input}
-                onChangeText={onChangeTextPassWord}
                 placeholder='Пароль'
-                value={textPassWord}
-                secureTextEntry={true} />
+                secureTextEntry={true}
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) => onChangeState((prevState) => ({ ...prevState, passWord: value }))}
+                value={state.passWord}
+            />
 
-            <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+            <TouchableOpacity style={styles.button} activeOpacity={0.7}
+                onPress={keyboardHidden}>
                 <Text style={styles.titleButton}>Зареєстуватися</Text>
             </TouchableOpacity>
         </View>
+
     )
 };
 
@@ -54,7 +86,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         justifyContent: 'center',
         padding: 16,
-        color: '#212121'
+        color: '#212121',
     },
     button: {
         marginTop: 35,
