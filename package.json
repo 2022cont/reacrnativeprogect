@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "windows": "react-native run-windows"
+    "windows": "react-native run-windows",
+    "react-devtools": "react-devtools"
   },
   "dependencies": {
     "expo": "~48.0.18",
@@ -17,12 +18,13 @@
     "file-loader": "^6.2.0",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "url-loader": "^4.1.1",
-    "react-native-windows": "0.71.19"
+    "react-native-windows": "0.71.19",
+    "url-loader": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "metro-config": "^0.73.9"
+    "metro-config": "^0.73.9",
+    "react-devtools": "^4.27.8"
   },
   "private": true
 }
