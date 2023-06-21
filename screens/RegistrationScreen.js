@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback  } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
 import {
     StyleSheet,
     TextInput,
     View,
     Text,
     TouchableOpacity,
-    Platform,
-    KeyboardAvoidingView,
+    // Platform,
+    // KeyboardAvoidingView,
     Keyboard
 } from 'react-native';
+
 
 const initialState = {
     login: '',
@@ -18,7 +22,11 @@ const initialState = {
 
 export default function RegistrationScreen() {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-
+    const [fontsLoaded] = useFonts({
+        'Roboto-Medium': require("../assets/fonts/Roboto/Roboto-Medium.ttf"),
+        'Roboto-Regular': require("../assets/fonts/Roboto/Roboto-Regular.ttf"),
+        'Roboto-Black':require("../assets/fonts/Roboto/Roboto-Black.ttf"),
+    });
     const [state, onChangeState] = useState(initialState);
 
 
@@ -29,10 +37,18 @@ export default function RegistrationScreen() {
 
         onChangeState(initialState);
     }
+    const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+    if (!fontsLoaded) {
+         return null;
+    }
 
     return (
-        <View style={styles.forma}>
-            <Text style={styles.title}>Реєстрація</Text>
+        <View style={styles.forma} onLayout={onLayoutRootView}>
+            <Text style={styles.title} >Реєстрація</Text>
             <TextInput style={styles.input}
                 placeholder='Логін'
                 onFocus={() => setIsShowKeyboard(true)}
@@ -58,6 +74,7 @@ export default function RegistrationScreen() {
                 onPress={keyboardHidden}>
                 <Text style={styles.titleButton}>Зареєстуватися</Text>
             </TouchableOpacity>
+            <Text >Вже є акаунт? Увійти</Text>
         </View>
 
     )
@@ -75,10 +92,10 @@ const styles = StyleSheet.create({
         marginVertical: 8,
     },
     title: {
-        fontWeight: 500,
         fontSize: 30,
         textAlign: 'center',
         marginVertical: 16,
+        fontFamily: 'Roboto-Medium'
     },
     forma: {
         backgroundColor: '#FFFFFF',
@@ -87,6 +104,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 16,
         color: '#212121',
+        fontFamily: 'Roboto-Regular'
     },
     button: {
         marginTop: 35,
@@ -98,7 +116,6 @@ const styles = StyleSheet.create({
     },
     titleButton: {
         fontSize: 16,
-        fontWeight: 400,
         color: '#FFFFFF',
     }
 });
